@@ -28,6 +28,7 @@
                 android:text="Inchara Analytics"
                 android:layout_weight="1"
                 android:textStyle="bold"
+                android:textSize="20sp"
                 android:textColor="#FFFFFF" />
             <ImageView
                 android:layout_width="wrap_content"
