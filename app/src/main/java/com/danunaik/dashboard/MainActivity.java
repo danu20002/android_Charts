@@ -1,23 +1,25 @@
 package com.danunaik.dashboard;
 
+import static android.os.Build.VERSION_CODES.P;
+
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.BubbleChart;
-import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
-import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.CandleData;
-import com.github.mikephil.charting.data.CandleDataSet;
-import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -27,17 +29,19 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    PieChart pieChart;
-    LineChart lineChart;
-    BarChart barChart;
-    ScatterChart scatterChart;
-    CandleStickChart candleStickChart;
-    BubbleChart bubbleChart;
+    private PieChart pieChart;
+    private LinearLayout labelLayout;
+    private LinearLayout chartContainer;
+    private BarChart barChart;
+    private LineChart lineChart;
+    private ScatterChart scatterChart;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,129 +49,172 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         pieChart = findViewById(R.id.pieChart);
-        lineChart = findViewById(R.id.lineChart);
-        barChart = findViewById(R.id.barChart);
-        scatterChart = findViewById(R.id.scatterChart);
-        candleStickChart = findViewById(R.id.candleStickChart);
-        bubbleChart = findViewById(R.id.bubbleChart);
+        labelLayout = findViewById(R.id.labelLayout);
+        chartContainer = findViewById(R.id.chartContainer);
 
+
+        barChart = findViewById(R.id.barchart);
+        lineChart = findViewById(R.id.linechart);
+        scatterChart = findViewById(R.id.scatterchart);
+
+        loadDataIntoCharts();
         setupPieChart();
-        setupLineChart();
-        setupBarChart();
-        setupScatterChart();
-        setupCandleStickChart();
-        setupBubbleChart();
+        loadPieChartData();
+      //  addCharts();
+    }
+
+    private void loadDataIntoCharts() {
+        loadBarChartData();
+        loadLineChartData();
+        loadScatterChartData();
+    }
+
+    private void loadBarChartData() {
+        List<BarEntry> entries = new ArrayList<>();
+        // Add CSR data to entries
+        entries.add(new BarEntry(1, 50)); // Example data
+        entries.add(new BarEntry(2, 70)); // Example data
+        entries.add(new BarEntry(3, 90)); // Example data
+
+        BarDataSet dataSet = new BarDataSet(entries, "CSR Data");
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(12f);
+
+        BarData data = new BarData(dataSet);
+        barChart.setData(data);
+        barChart.invalidate(); // Refresh chart
+    }
+
+    private void loadLineChartData() {
+        List<Entry> entries = new ArrayList<>();
+        // Add CSR data to entries
+        entries.add(new Entry(1, 50)); // Example data
+        entries.add(new Entry(2, 70)); // Example data
+        entries.add(new Entry(3, 90)); // Example data
+
+        LineDataSet dataSet = new LineDataSet(entries, "CSR Data");
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(12f);
+
+        LineData data = new LineData(dataSet);
+        lineChart.setData(data);
+        lineChart.invalidate(); // Refresh chart
+    }
+
+    private void loadScatterChartData() {
+        List<Entry> entries = new ArrayList<>();
+        // Add CSR data to entries
+        entries.add(new Entry(1, 50)); // Example data
+        entries.add(new Entry(2, 70)); // Example data
+        entries.add(new Entry(3, 90)); // Example data
+
+        ScatterDataSet dataSet = new ScatterDataSet(entries, "CSR Data");
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(12f);
+
+        ScatterData data = new ScatterData(dataSet);
+        scatterChart.setData(data);
+        scatterChart.invalidate(); // Refresh chart
+    }
+    private void addCharts() {
+        // Create BarChart inside CardView
+        BarChart barChart = new BarChart(this);
+        CardView barChartCard = new CardView(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.setMargins(20, 20, 20, 20);
+        barChart.setLayoutParams(layoutParams);
+        barChartCard.addView(barChart);
+        chartContainer.addView(barChartCard);
+
+        // Create LineChart inside CardView
+        LineChart lineChart = new LineChart(this);
+        CardView lineChartCard = new CardView(this);
+        lineChart.setLayoutParams(layoutParams);
+        lineChartCard.addView(lineChart);
+        chartContainer.addView(lineChartCard);
+
+        // Create ScatterChart inside CardView
+        ScatterChart scatterChart = new ScatterChart(this);
+        CardView scatterChartCard = new CardView(this);
+        scatterChart.setLayoutParams(layoutParams);
+        scatterChartCard.addView(scatterChart);
+        chartContainer.addView(scatterChartCard);
     }
 
     private void setupPieChart() {
-        List<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(40f, "Environmental Impact"));
-        entries.add(new PieEntry(30f, "Community Engagement"));
-        entries.add(new PieEntry(30f, "Charitable Donations"));
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(Color.WHITE);
+        pieChart.setHoleRadius(58f);
+        pieChart.setTransparentCircleRadius(61f);
 
-        PieDataSet dataSet = new PieDataSet(entries, "CSR Contributions");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieChart.setDrawCenterText(true);
+        pieChart.setCenterText("CSR Analysis");
+        pieChart.setCenterTextSize(10f);
+
+        pieChart.getDescription().setEnabled(false);
+
+        Legend legend = pieChart.getLegend();
+        legend.setEnabled(false); // Disable legend as we will create custom labels
+    }
+
+    private void loadPieChartData() {
+        List<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(25f, "Environment"));
+        entries.add(new PieEntry(25f, "Education"));
+        entries.add(new PieEntry(20f, "Health"));
+        entries.add(new PieEntry(15f, "Community"));
+        entries.add(new PieEntry(15f, "Other"));
+
+        PieDataSet dataSet = new PieDataSet(entries, "CSR Distribution");
+
+        // Custom colors for the Pie Chart
+        List<Integer> colors = new ArrayList<>();
+        colors.add(Color.rgb(102, 204, 0));  // Environment
+        colors.add(Color.rgb(0, 102, 204));  // Education
+        colors.add(Color.rgb(204, 0, 102));  // Health
+        colors.add(Color.rgb(255, 153, 0));  // Community
+        colors.add(Color.rgb(153, 51, 255)); // Other
+        dataSet.setColors(colors);
+
         PieData data = new PieData(dataSet);
+        data.setValueTextSize(12f);
+        data.setValueTextColor(Color.BLACK);
 
         pieChart.setData(data);
         pieChart.invalidate(); // refresh
-        Description desc = new Description();
-        desc.setText("");
-        pieChart.setDescription(desc);
+        pieChart.animateY(1400, Easing.EaseInOutQuad);
+
+        addLabels(entries, dataSet.getColors());
     }
 
-    private void setupLineChart() {
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 50));
-        entries.add(new Entry(1, 100));
-        entries.add(new Entry(2, 150));
-        entries.add(new Entry(3, 200));
-        entries.add(new Entry(4, 250));
-        entries.add(new Entry(5, 300));
+    private void addLabels(List<PieEntry> entries, List<Integer> colors) {
+        labelLayout.removeAllViews();
+        for (int i = 0; i < entries.size(); i++) {
+            PieEntry entry = entries.get(i);
 
-        LineDataSet dataSet = new LineDataSet(entries, "CSR Trends Over Time");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        LineData lineData = new LineData(dataSet);
-        lineChart.setData(lineData);
-        lineChart.invalidate(); // refresh
-        Description desc = new Description();
-        desc.setText("");
-        lineChart.setDescription(desc);
-    }
+            LinearLayout labelContainer = new LinearLayout(this);
+            labelContainer.setOrientation(LinearLayout.HORIZONTAL);
+            labelContainer.setGravity(Gravity.CENTER_VERTICAL);
 
-    private void setupBarChart() {
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 40));
-        entries.add(new BarEntry(1, 30));
-        entries.add(new BarEntry(2, 60));
-        entries.add(new BarEntry(3, 80));
-        entries.add(new BarEntry(4, 120));
-        entries.add(new BarEntry(5, 90));
+            View colorBox = new View(this);
+            colorBox.setLayoutParams(new LinearLayout.LayoutParams(20, 20));
+            colorBox.setBackgroundColor(colors.get(i));
 
-        BarDataSet dataSet = new BarDataSet(entries, "CSR Data");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        BarData data = new BarData(dataSet);
-        barChart.setData(data);
-        barChart.invalidate(); // refresh
-        Description desc = new Description();
-        desc.setText("");
-        barChart.setDescription(desc);
-    }
+            TextView label = new TextView(this);
+            label.setText(entry.getLabel());
+            label.setTextColor(Color.WHITE);
+            label.setGravity(Gravity.CENTER_VERTICAL);
+            label.setPadding(10, 0, 0, 0);
 
-    private void setupScatterChart() {
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 30));
-        entries.add(new Entry(1, 50));
-        entries.add(new Entry(2, 80));
-        entries.add(new Entry(3, 60));
-        entries.add(new Entry(4, 100));
-        entries.add(new Entry(5, 120));
-
-        ScatterDataSet dataSet = new ScatterDataSet(entries, "Scatter Data");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        ScatterData scatterData = new ScatterData(dataSet);
-        scatterChart.setData(scatterData);
-        scatterChart.invalidate(); // refresh
-        Description desc = new Description();
-        desc.setText("");
-        scatterChart.setDescription(desc);
-    }
-
-    private void setupCandleStickChart() {
-        List<CandleEntry> entries = new ArrayList<>();
-        entries.add(new CandleEntry(0, 60f, 50f, 70f, 40f));
-        entries.add(new CandleEntry(1, 70f, 65f, 80f, 55f));
-        entries.add(new CandleEntry(2, 75f, 70f, 85f, 60f));
-        entries.add(new CandleEntry(3, 72f, 68f, 78f, 62f));
-        entries.add(new CandleEntry(4, 78f, 75f, 82f, 70f));
-        entries.add(new CandleEntry(5, 80f, 77f, 85f, 73f));
-
-        CandleDataSet dataSet = new CandleDataSet(entries, "Candle Stick Data");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        CandleData candleData = new CandleData(dataSet);
-        candleStickChart.setData(candleData);
-        candleStickChart.invalidate(); // refresh
-        Description desc = new Description();
-        desc.setText("");
-        candleStickChart.setDescription(desc);
-    }
-
-    private void setupBubbleChart() {
-        List<BubbleEntry> entries = new ArrayList<>();
-        entries.add(new BubbleEntry(0, 30f, 20f));
-        entries.add(new BubbleEntry(1, 40f, 25f));
-        entries.add(new BubbleEntry(2, 50f, 30f));
-        entries.add(new BubbleEntry(3, 60f, 35f));
-        entries.add(new BubbleEntry(4, 70f, 40f));
-        entries.add(new BubbleEntry(5, 80f, 45f));
-
-        BubbleDataSet dataSet = new BubbleDataSet(entries, "Bubble Data");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        BubbleData bubbleData = new BubbleData(dataSet);
-        bubbleChart.setData(bubbleData);
-        bubbleChart.invalidate(); // refresh
-        Description desc = new Description();
-        desc.setText("");
-        bubbleChart.setDescription(desc);
+            labelContainer.addView(colorBox);
+            labelContainer.addView(label);
+            labelLayout.addView(labelContainer);
+        }
     }
 }
