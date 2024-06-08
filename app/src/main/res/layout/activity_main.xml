@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Placeholder for PieChart -->
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Placeholder for LineChart -->
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/pieChart"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Placeholder for BarChart -->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/lineChart"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Placeholder for ScatterChart -->
+        <com.github.mikephil.charting.charts.ScatterChart
+            android:id="@+id/scatterChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/barChart"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Placeholder for CandleStickChart -->
+        <com.github.mikephil.charting.charts.CandleStickChart
+            android:id="@+id/candleStickChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/scatterChart"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Placeholder for BubbleChart -->
+        <com.github.mikephil.charting.charts.BubbleChart
+            android:id="@+id/bubbleChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/candleStickChart"
+            android:layout_marginTop="16dp"/>
+
+    </RelativeLayout>
+</ScrollView>
